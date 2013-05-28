@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Twitter Application-only Authentication OAuth using Python by jonhurlock</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/jonhurlock/Twitter-Application-Only-Authentication-Python">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/jonhurlock/Twitter-Application-Only-Authentication-Python/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/jonhurlock/Twitter-Application-Only-Authentication-Python/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Twitter Application-only Authentication OAuth using Python</h1>
+          <p>Provides a set of functions to allow authentication via Twitter's Application Only Authentication (OAuth) methods written in Python</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/jonhurlock">jonhurlock</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h3>Welcome to jonhurlock's Twitter Application only authentication python scripts</h3>
+
+<p>Need to use application authentication-only authentication to access twitter. Well why not use this quick script.</p>
+
+<h2>To Use.</h2>
+
+<ol>
+<li>Download Script</li>
+<li>Edit the lines towards the bottom of the file to reflect your apps consumer key and consumer secret.</li>
+<li>Call the get_bearer_token() function to grab a bearer_token</li>
+<li>Query the API using the bearer token. Example shown below using the search_for_a_term function.</li>
+</ol><div class="highlight"><pre><span class="n">bearer_token</span> <span class="o">=</span> <span class="n">get_bearer_token</span><span class="p">(</span><span class="n">consumer_key</span><span class="p">,</span><span class="n">consumer_secret</span><span class="p">)</span> <span class="c"># generates a bearer token</span>
+<span class="n">search_results</span> <span class="o">=</span> <span class="n">search_for_a_tweet</span><span class="p">(</span><span class="n">bearer_token</span><span class="p">,</span> <span class="s">'test'</span><span class="p">)</span> <span class="c"># does a very basic search</span>
+<span class="k">print</span> <span class="n">search_results</span> <span class="c"># prints results form the search</span>
+</pre></div>
+
+<p>or alternatively if you just want to search for a specific tweet, use the following code.</p>
+
+<div class="highlight"><pre><span class="n">bearer_token</span> <span class="o">=</span> <span class="n">get_bearer_token</span><span class="p">(</span><span class="n">consumer_key</span><span class="p">,</span><span class="n">consumer_secret</span><span class="p">)</span> <span class="c"># generates a bearer token</span>
+<span class="n">tweet</span> <span class="o">=</span> <span class="n">grab_a_tweet</span><span class="p">(</span><span class="n">bearer_token</span><span class="p">,</span> <span class="s">'339309066792878080'</span><span class="p">)</span> <span class="c"># grabs a single tweet (and some extra info) by passing the target tweet's id </span>
+<span class="k">print</span> <span class="n">tweet</span><span class="p">[</span><span class="s">'tweet'</span><span class="p">]</span> <span class="c"># prints the tweet from the single tweet grabbed</span>
+</pre></div>
+
+<p>If you have any queries, contact me via twitter at <a href="https://github.com/jonhurlock" class="user-mention">@jonhurlock</a></p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
