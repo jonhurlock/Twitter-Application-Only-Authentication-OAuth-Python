@@ -14,6 +14,7 @@
 import sys # used for the storage class
 import pycurl # used for curling
 import base64 # used for encoding string
+import urllib # used for enconding
 import cStringIO # used for curl buffer grabbing
 import json # used for decoding json token
 import time # used for stuff to do with the rate limiting
@@ -53,9 +54,9 @@ def grab_rate_limit_time(headers):
 # obtains the bearer token
 def get_bearer_token(consumer_key,consumer_secret):
 	# enconde consumer key
-	#consumer_key = urllib.urlencode(consumer_key)
+	consumer_key = urllib.quote(consumer_key)
 	# encode consumer secret
-	#consumer_secret = urllib.urlencode(consumer_secret)
+	consumer_secret = urllib.quote(consumer_secret)
 	# create bearer token
 	bearer_token = consumer_key+':'+consumer_secret
 	# base64 encode the token
@@ -88,9 +89,9 @@ def get_bearer_token(consumer_key,consumer_secret):
 # invalidates a given bearer token
 def invalidate_bearer_token(o_bearer_token,consumer_key,consumer_secret):
 	# enconde consumer key
-	#consumer_key = urllib.urlencode(consumer_key)
+	consumer_key = urllib.quote(consumer_key)
 	# encode consumer secret
-	#consumer_secret = urllib.urlencode(consumer_secret)
+	consumer_secret = urllib.quote(consumer_secret)
 	# create bearer token
 	bearer_token = consumer_key+':'+consumer_secret
 	# base64 encode the token
