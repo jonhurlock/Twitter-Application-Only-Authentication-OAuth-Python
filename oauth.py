@@ -19,6 +19,7 @@ import cStringIO # used for curl buffer grabbing
 import json # used for decoding json token
 import time # used for stuff to do with the rate limiting
 from time import sleep # used for rate limiting
+from time import gmtime, strftime # used for gathering time
 
 # Ignore this class, its just to do with handling of HTTP headers
 class Storage:
@@ -32,6 +33,53 @@ class Storage:
 
     def __str__(self):
         return self.contents
+
+# Stream class
+class Stream:
+	def __init__(self, f):
+		self.file = f
+		self.currentHour = getHour()
+
+	def body_callback(self, buf):
+		try:
+			#jsonstring = json.loads(buf)
+			#print jsonstring['text']
+			if self.currentHour != getHour():
+				try:
+					self.file.close()
+					self.file = open(generateFileName(), 'w')
+					self.file.close()
+					self.file = open(generateFileName(), 'a')
+					self.file.write(buf)
+					self.currentHour = getHour()
+				except:
+					print "Something went wrong closing the creating a new file"
+			else:
+				try:
+					self.file.write(buf)
+				except:
+					print "Something went wrong trying to append to the file"
+		except:
+			print "failed to write to "+generateFileName()
+			pass
+
+def getYear():
+	return strftime("%Y", gmtime())
+
+def getMonth():
+	return strftime("%m", gmtime())
+
+def getDay():
+	return strftime("%d", gmtime())
+
+def getHour():
+	return strftime("%H", gmtime())
+
+def getMinute():
+	return strftime("%M", gmtime())	
+
+def generateFileName():
+	return getYear()+"-"+getMonth()+"-"+getDay()+"-"+getHour()+".json"
 
 # grabs the rate limit remaining from the headers
 def grab_rate_limit_remaining(headers):
@@ -170,15 +218,48 @@ def grab_a_tweet(bearer_token, tweet_id):
 	current_time = time.mktime(time.gmtime())
 	return {'tweet':tweet, '_current_time':current_time, '_reset_time':reset_time, '_pings_left':pings_left}
 
+# prints out the twitter stream see https://dev.twitter.com/docs/api/1.1/get/statuses/sample
+def grab_stream(bearer_token):
+	userName = 'a'
+	password = 'b'
+	current_hour = getHour()
+	f = open(generateFileName(), 'w')
+	f.close()
+	f = open(generateFileName(), 'a')
+	url = "https://stream.twitter.com/1.1/statuses/sample.json"
+	formed_url =''
+	headers = [ 
+	str("GET 1.1/statuses/sample.json"+formed_url+" HTTP/1.1"), 
+	str("Host: stream.twitter.com"), 
+	str("User-Agent: jonhurlock Twitter Application-only OAuth App Python v.1"),
+	str("Authorization: "+base64.b64encode(userName+":"+password)+"") # Need to sort this out
+	# technically application only authorisation will not work, need to use traditional oauth
+	]
+	buf = cStringIO.StringIO()
+	retrieved_headers = Storage()
+	pycurl_connect = pycurl.Curl()
+	pycurl_connect.setopt(pycurl_connect.URL, url+formed_url) # used to tell which url to go to
+	pycurl_connect.setopt(pycurl_connect.WRITEFUNCTION, buf.write) # used for generating output
+	pycurl_connect.setopt(pycurl_connect.HTTPHEADER, headers) # sends the customer headers above
+	pycurl_connect.setopt(pycurl_connect.HEADERFUNCTION, retrieved_headers.store)
+	#pycurl_connect.setopt(pycurl_connect.VERBOSE, True) # used for debugging, really helpful if you want to see what happens
+	pycurl_connect.perform() # perform the curl
+	print buf.getvalue() # grab the data
+	pycurl_connect.close() # stop the curl
 
+
+	
 # examples of how to use the code
-consumer_key = '' # put your apps consumer key here
-consumer_secret = '' # put your apps consumer secret here
+consumer_key = 'c' # put your apps consumer key here
+consumer_secret = 'd' # put your apps consumer secret here
 
 bearer_token = get_bearer_token(consumer_key,consumer_secret) # generates a bearer token
-search_results = search_for_a_tweet(bearer_token, 'test') # does a very basic search
-tweet = grab_a_tweet(bearer_token, '339309066792878080') # grabs a single tweet & some extra bits
+#search_results = search_for_a_tweet(bearer_token, 'test') # does a very basic search
+#tweet = grab_a_tweet(bearer_token, '339309066792878080') # grabs a single tweet & some extra bits
+#print tweet
+#print '#########'
+#grab_stream(bearer_token) # does NOT currently work
 #invalidate_bearer_token(bearer_token,consumer_key,consumer_secret) # invalidates the token
 
-print search_results # prints results form the search
-print tweet['tweet'] # prints the tweet from the single tweet grabbed
+#print search_results # prints results form the search
+#print tweet['tweet'] # prints the tweet from the single tweet grabbed
