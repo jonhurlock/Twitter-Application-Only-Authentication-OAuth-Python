@@ -8,8 +8,10 @@ Methods include the following:
 If you wish to use this script you will have to have registered your application with Twitter via dev.twitter.com
 Then modify the following lines:
 
+```python
 consumer_key = 'c' # put your apps consumer key here
 consumer_secret = 'd' # put your apps consumer secret here
+```
 
 At the bottom of the script you will see a demo of getting a bearer token, using the bearer token to perform a search
 and then invalidating the token.
