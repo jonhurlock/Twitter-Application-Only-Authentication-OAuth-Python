@@ -19,6 +19,8 @@ and then invalidating the token.
 ## Notice
 This code is not tested and probably shouldn't be put into production systems, and is only supposed to reperesent the steps involved in performing application-only authentication. It is really really quickly and dirtly mocked up.
 
+It also includes a bunch for rubbish at the bottom which I will clean up shortly
+
 ## Contact Me
 If you have any problems contact me via twitter @jonhurlock
 
